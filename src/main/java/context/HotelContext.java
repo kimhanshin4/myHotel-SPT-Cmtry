@@ -1,6 +1,11 @@
+package context;
+
 import java.util.ArrayList;
 
-class HotelContext {
+import Model.Reservation;
+import Model.Room;
+
+public class HotelContext {
     ArrayList<Room> roomList;
     double revenue;
     ArrayList<Reservation> reservationList = new ArrayList<>();
@@ -50,8 +55,20 @@ class HotelContext {
         }
     }
 
+    public ArrayList<Reservation> getReservationList() {
+        return reservationList;
+    }
+
+    public ArrayList<Room> getRoomList() {
+        return roomList;
+    }
+
     public double getRevenue() {
         return revenue;
+    }
+
+    public void addRevenue(double income) {
+        this.revenue += income;
     }
 
     /**

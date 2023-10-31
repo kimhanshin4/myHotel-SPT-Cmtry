@@ -1,5 +1,9 @@
+package Model;
+
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
+
+import context.CustomerContext;
 
 public class Reservation{
     private final int roomIndex;
@@ -22,6 +26,11 @@ public class Reservation{
     public String getReservationNumber() {
         return reservationNumber;
     }
+
+    public String getCustomerName() {
+        return customerContext.getName();
+    }
+
     @Override
     public String toString(){
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일");

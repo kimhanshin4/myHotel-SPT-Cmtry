@@ -1,3 +1,5 @@
+package context;
+
 public class CustomerContext {
     private final String name;
     private final String phoneNumber;
