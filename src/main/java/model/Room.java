@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -10,12 +10,15 @@ public class Room {
     private final int roomSize;
     private List<LocalDate> occupiedDateList;
 
+    // 생성자
     public Room(String roomType, double roomFee, int roomSize) {
         this.roomType = roomType;
         this.roomFee = roomFee;
         this.roomSize = roomSize;
         this.occupiedDateList = new ArrayList<>();
     }
+
+    // Getter, Setter 메서드
     public String getRoomType() {
         return roomType;
     }
@@ -23,6 +26,7 @@ public class Room {
         return roomFee;
     }
 
+    // 서비스 메서드
     public boolean isOccupied(LocalDate localDate) {
         return this.occupiedDateList.contains(localDate);
     }

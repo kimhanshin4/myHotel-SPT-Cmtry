@@ -1,10 +1,7 @@
-package Model;
+package model;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.LocalDateTime;
-
-import context.CustomerContext;
 
 public class Reservation{
     private final int roomIndex;
@@ -13,6 +10,7 @@ public class Reservation{
     private final String customerName;
     private final String customerPhoneNumber;
 
+    // 생성자
     public Reservation(String name, String phoneNumber, int roomIndex, LocalDate reservationDate, String reservationNumber) {
         this.customerName = name;
         this.customerPhoneNumber = phoneNumber;
@@ -20,6 +18,8 @@ public class Reservation{
         this.reservationDate = reservationDate;
         this.reservationNumber = reservationNumber;
     }
+
+    // Getter, Setter 메서드
     public int getRoomIndex() {
         return roomIndex;
     }
@@ -34,6 +34,7 @@ public class Reservation{
         return customerName;
     }
 
+    // 서비스 메서드
     @Override
     public String toString(){
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일");

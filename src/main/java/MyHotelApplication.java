@@ -4,8 +4,8 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.time.format.DateTimeFormatter;
 
-import Model.Reservation;
-import Model.Room;
+import model.Reservation;
+import model.Room;
 import context.CustomerContext;
 import context.HotelContext;
 
@@ -74,7 +74,6 @@ public class MyHotelApplication {
             case 1 -> {
                 // 예약 목록 조회 기능 구현
                 printAllReservation();
-                // revenue 메서드 만들기
                 System.out.println("호텔의 총 수익: " + hotelContext.getRevenue() + " 원");
             }
             case 2 -> {} // 돌아가기
@@ -184,7 +183,7 @@ public class MyHotelApplication {
         hotelContext.displayRooms();
         System.out.print("객실의 번호를 입력해주세요: ");
         int input = sc.nextInt();
-        System.out.print("예약할 날짜를 입력해주세요 (ex. 2023-11-1) : ");
+        System.out.print("예약할 날짜를 입력해주세요 (ex. 2023-11-01) : ");
         String dateInput = sc.next();
         LocalDate date = LocalDate.parse(dateInput, DATE_TIME_FORMATTER);
 
