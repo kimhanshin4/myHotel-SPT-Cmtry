@@ -22,7 +22,7 @@ public class HotelContext {
                 Room room = roomList.get(res.getRoomIndex());
                 this.revenue -= room.getRoomFee();
                 System.out.println(room.getRoomType() + "의 가격 : " + room.getRoomFee() + "원이 환불 되었습니다.");
-                room.setReservationStatus();
+                room.cancelOccupancy(res.getReservationDate());
                 customerContext.refundMoney(room.getRoomFee());
                 canceled = true;
                 reservationList.remove(res);
@@ -35,10 +35,10 @@ public class HotelContext {
         }
     }
     public void initializeRooms() {
-        Room singleRoom = new Room("싱글룸", 100.0, 16, true);
-        Room doubleRoom = new Room("더블룸", 150.0, 24, true);
-        Room twinRoom = new Room("트윈룸", 200.0, 16, true);
-        Room suiteRoom = new Room("스위트룸", 250.0, 34, true);
+        Room singleRoom = new Room("싱글룸", 100.0, 16);
+        Room doubleRoom = new Room("더블룸", 150.0, 24);
+        Room twinRoom = new Room("트윈룸", 200.0, 16);
+        Room suiteRoom = new Room("스위트룸", 250.0, 34);
 
         roomList.add(singleRoom);
         roomList.add(doubleRoom);

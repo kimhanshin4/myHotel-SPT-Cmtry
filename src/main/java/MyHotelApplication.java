@@ -1,7 +1,8 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.time.format.DateTimeFormatter;
-import java.time.LocalDateTime;
 
 import Model.Reservation;
 import Model.Room;
@@ -11,6 +12,7 @@ import context.HotelContext;
 public class MyHotelApplication {
     private static HotelContext hotelContext;
     private static CustomerContext customerContext;
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public static void main(String[] args) {
         hotelContext = new HotelContext();
@@ -28,7 +30,12 @@ public class MyHotelApplication {
             System.out.println(customerContext.getName() + "님의 소지금: " + customerContext.getMoney() + " 원");
         }
 
-        handleMainMenuInput();
+        try {
+            handleMainMenuInput();
+        } catch (InputMismatchException e) {
+            System.out.println("잘못된 입력입니다.\n다시 입력해주세요.");
+            displayManagerMenu();
+        }
     }
 
     private static void handleMainMenuInput() {
@@ -70,7 +77,7 @@ public class MyHotelApplication {
                 // revenue 메서드 만들기
                 System.out.println("호텔의 총 수익: " + hotelContext.getRevenue() + " 원");
             }
-            case 2 -> displayMainMenu();
+            case 2 -> {} // 돌아가기
             default -> {
                 System.out.println("잘못된 입력입니다. 다시 입력하세요");
                 displayManagerMenu();
@@ -119,7 +126,7 @@ public class MyHotelApplication {
     private static void checkReservation() {
         // 해당 손님의 정보 1건만 출력하기
         Scanner checkScanner = new Scanner(System.in);
-        boolean flag = true;
+        boolean checked = false;
 
         System.out.println("[ 예약 확인 ] ");
         System.out.print("예약번호를 입력해 주세요\n예약번호: ");
@@ -127,12 +134,12 @@ public class MyHotelApplication {
         for(Reservation printReservation : hotelContext.getReservationList() ) {
             if(printReservation.getReservationNumber().equals(reservationInput)) {
                 System.out.println(printReservation);
-                flag = false;
+                checked = true;
                 break;
             }
         }
 
-        if(flag) {
+        if(!checked) {
             System.out.println("일치하는 예약 번호가 없습니다.");
         }
     }
@@ -177,6 +184,9 @@ public class MyHotelApplication {
         hotelContext.displayRooms();
         System.out.print("객실의 번호를 입력해주세요: ");
         int input = sc.nextInt();
+        System.out.print("예약할 날짜를 입력해주세요 (ex. 2023-11-1) : ");
+        String dateInput = sc.next();
+        LocalDate date = LocalDate.parse(dateInput, DATE_TIME_FORMATTER);
 
         // 호텔의 객실 목록을 가져옴
         ArrayList<Room> roomList = hotelContext.getRoomList();
@@ -192,9 +202,9 @@ public class MyHotelApplication {
         }
 
         // 해당 객실이 예약 가능한지 확인하고 예약 처리
-        if (selectedRoom != null && selectedRoom.isAvailable()) {
+        if (selectedRoom != null && !selectedRoom.isOccupied(date)) {
             System.out.println(input + "번 방을 예약합니다.");
-            LocalDateTime reservationDate = LocalDateTime.parse(String.valueOf(LocalDateTime.now()));
+            LocalDate reservationDate = LocalDate.now();
 
             // 예약한 객실의 가격과 고객의 소지금 비교
             double roomFee = selectedRoom.getRoomFee();
@@ -217,15 +227,14 @@ public class MyHotelApplication {
                 hotelContext.addRevenue(roomFee);
 
                 // 예약 상태 변경
-                selectedRoom.setReservationStatus();
+                selectedRoom.accupy(reservationDate);
 
                 // 고객의 남은 소지금 계산
                 double remainingMoney = customerMoney - roomFee;
                 customerContext.setMoney(remainingMoney);
 
                 System.out.println("객실이 예약되었습니다.");
-                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일");
-                System.out.println("예약 일자 :" +reservationDate.format(dateTimeFormatter)+ " 입니다.");
+                System.out.println("예약 일자 :" +reservationDate.format(DATE_TIME_FORMATTER)+ " 입니다.");
                 System.out.println("예약 코드는 : " +reservationCode+ " 입니다.");
                 System.out.println("고객의 남은 소지금: " + remainingMoney + " 원");
             }

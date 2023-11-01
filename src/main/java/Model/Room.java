@@ -1,16 +1,20 @@
 package Model;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Room {
     private final String roomType;
     private final double roomFee;
     private final int roomSize;
-    boolean available;
+    private List<LocalDate> occupiedDateList;
 
-    public Room(String roomType, double roomFee, int roomSize, boolean available) {
+    public Room(String roomType, double roomFee, int roomSize) {
         this.roomType = roomType;
         this.roomFee = roomFee;
         this.roomSize = roomSize;
-        this.available = available;
+        this.occupiedDateList = new ArrayList<>();
     }
     public String getRoomType() {
         return roomType;
@@ -19,16 +23,19 @@ public class Room {
         return roomFee;
     }
 
-    public boolean isAvailable() {
-        return available;
+    public boolean isOccupied(LocalDate localDate) {
+        return this.occupiedDateList.contains(localDate);
     }
 
-    public void setReservationStatus() {
-        this.available = !available;
+    public void cancelOccupancy(LocalDate date) {
+        this.occupiedDateList.remove(date);
+    }
+    public void accupy(LocalDate date) {
+        this.occupiedDateList.add(date);
     }
 
     public void displayRoomInfo() {
-        System.out.println((available ? "   -예약 가능-" : "***예약 불가능***"));
+        System.out.println("예약 불가능한 날짜: " + occupiedDateList);
         System.out.println("객실 타입: " + roomType);
         System.out.println("객실 요금: " + roomFee + " 원");
         System.out.println("객실 크기: " + roomSize + " m^2");
